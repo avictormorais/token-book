@@ -23,13 +23,19 @@ const Container = styled.div`
 
 const DivExample = styled.div`
     background-color: var(--secondary-color);
-    width: 700px;
+    max-width: 700px;
     height: 150px;
     border-radius: 10px;
     margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-inline: 25px;
+    text-align: center;
+
+    @media (max-width: 700px) {
+        width: 70vw;
+    }
 `
 
 export default Home

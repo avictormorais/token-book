@@ -87,7 +87,7 @@ function NavBar() {
                         <StyledMoon/>
                     </Containericon>
                 )}
-                <Containericon>
+                <Containericon style={{marginRight: '0px'}}>
                     <AccountIcon/>
                 </Containericon>
             </StyledDiv>
