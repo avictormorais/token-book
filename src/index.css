@@ -1,0 +1,61 @@
+
+*{
+  font-family: Rubik, sans-serif;
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  color: var(--primary-text-color);
+  transition: all .3s ease-in-out;
+}
+
+:root{
+  --primary-color: #efe5dc;
+  --secondary-color: #e1d5c8;
+  --accent-color: #000000;
+  --primary-text-color: #70544b;
+  --secondary-text-color: white;
+  --padding-inline-layout: 70px;
+}
+
+[data-theme="dark"]{
+  --primary-color: #070815;
+  --secondary-color: #141521;
+  --accent-color: white;
+  --primary-text-color: white;
+  --secondary-text-color: black;
+}
+
+@media (max-width: 700px) {
+  :root{
+    --padding-inline-layout: 35px;
+  }
+}
+
+Link{
+  text-decoration: none;
+  border: none;
+}
+
+body, #root, .App{
+  background-color: var(--primary-color);
+  margin: 0;
+  padding: 0;
+  color: var(--primary-text-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+*::-webkit-scrollbar {
+  width: 15px;
+  background-color: var(--secondary-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--primary-text-color);
+  border-radius: 10px;
+  border: 3px solid var(--secondary-color);
+}
