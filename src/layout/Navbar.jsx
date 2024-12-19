@@ -4,9 +4,10 @@ import { IoMdSunny } from "react-icons/io";
 import { FiMoon } from "react-icons/fi";
 import { GiBrazilFlag } from "react-icons/gi";
 import { FaFlagUsa } from "react-icons/fa";
-import { FaBook } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 import { MdAccountCircle } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
+import IconComponent from '../components/IconComponent'
 
 function NavBar() {
     const [isLight, setIsLight] = useState(() => {
@@ -15,6 +16,7 @@ function NavBar() {
     });
 
     const { i18n } = useTranslation();
+    const navigate = useNavigate();
 
     const [isPT, setIsPT] = useState(() => {
         const storedLanguage = localStorage.getItem('language');
@@ -64,9 +66,16 @@ function NavBar() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    const handleAccountClick = () => {
+        const token = localStorage.getItem('token');
+        navigate(token ? '/account' : '/login');
+    };
+
     return (
         <StyledNav>
-            <TemporaryIcon/>
+            <IconDiv onClick={handleScrollToTop}>
+                <IconComponent height={'40px'} fill={'var(--primary-text-color)'}/>
+            </IconDiv>
             <StyledDiv>
                 {isPT ? (
                     <Containericon onClick={handleLanguageClick}>
@@ -87,7 +96,7 @@ function NavBar() {
                         <StyledMoon/>
                     </Containericon>
                 )}
-                <Containericon style={{marginRight: '0px'}}>
+                <Containericon onClick={handleAccountClick} style={{marginRight: '0px'}}>
                     <AccountIcon/>
                 </Containericon>
             </StyledDiv>
@@ -161,9 +170,11 @@ const StyledUSA = styled(FaFlagUsa)`
     font-size: 1.15em;
 `
 
-const TemporaryIcon = styled(FaBook)`
+const IconDiv = styled.div`
     margin-left: var(--padding-inline-layout);
-    font-size: 1.8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
 `
 
