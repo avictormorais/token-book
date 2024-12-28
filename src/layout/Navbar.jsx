@@ -118,6 +118,20 @@ const StyledNav = styled.nav`
     @media screen and (max-width: 700px) {
         padding-block: 15px;
     }
+
+    @media screen and (min-width: 700px) {
+        width: 60px;
+        height: 90vh;
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left: 20px;
+        background-color: var(--secondary-color);
+        border-radius: 15px;
+        margin-block: auto;
+        top: calc(10vh/4);
+    }
 `
 
 const StyledDiv = styled.div`
@@ -127,6 +141,10 @@ const StyledDiv = styled.div`
     margin-right: var(--padding-inline-layout);
     flex-direction: row;
     margin-left: auto;
+
+    @media screen and (min-width: 700px) {
+        flex-direction: column;
+    }
 `
 
 const Containericon = styled.div`
@@ -139,6 +157,11 @@ const Containericon = styled.div`
     aspect-ratio: 1;
     width: 40px;
     height: 40px;
+
+    @media screen and (min-width: 700px) {
+        margin-block: 5px;
+        background-color: var(--primary-color);
+    }
 
     &:hover {
         cursor: pointer;
@@ -176,6 +199,11 @@ const IconDiv = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+
+    @media screen and (min-width: 700px) {
+        margin: 0;
+        margin-bottom: auto;
+    }
 `
 
 export default NavBar;
