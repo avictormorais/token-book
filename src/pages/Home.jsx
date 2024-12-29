@@ -59,11 +59,16 @@ const Container = styled.div`
     }
 
     @media screen and (max-width: 1100px) {
-        width: 88%;
+        width: 85%;
     }
 
     @media screen and (max-width: 900px) {
         width: 85%;
+    }
+
+    @media screen and (max-width: 700px) {
+        width: 90%;
+        padding-top: 100px;
     }
 `
 
