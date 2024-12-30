@@ -27,6 +27,8 @@
     "or": "Ou",
     "select_file": "Selecione um arquivo",
     "download_book": "Baixar livro",
+    "page_not_found": "Página Não Encontrada.",
+    "go_to_home": "Voltar pra home",
 
     "LOGIN_errorField": "Preencha todos os campos.",
     "LOGIN_errorEmail": "Insira um email válido.",
