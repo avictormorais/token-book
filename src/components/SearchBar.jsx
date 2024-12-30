@@ -1,20 +1,42 @@
 import styled from "styled-components";
 import { useTranslation } from 'react-i18next'
 import { HiSearch } from "react-icons/hi";
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-function SearchBar(){
+function SearchBar() {
     const { t } = useTranslation();
+    const [q, setQ] = useState('');
+    const navigate = useNavigate();
 
-    return(
+    const handleSearch = () => {
+        if (q !== '') {
+            navigate(`/search/${q}`);
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
+    return (
         <Container>
             <DivInput>
-                <SearchIcon/>
-                <Line/>
-                <Input type="Text" placeholder={t('search_placeholder')}/>
+                <SearchIcon />
+                <Line />
+                <Input 
+                    value={q} 
+                    onChange={(e) => setQ(e.target.value)} 
+                    onKeyDown={handleKeyDown}
+                    type="text" 
+                    placeholder={t('search_placeholder')} 
+                />
             </DivInput>
-            <Button>{t('search')}</Button>
+            <Button onClick={handleSearch}>{t('search')}</Button>
         </Container>
-    )
+    );
 }
 
 const Container = styled.div`

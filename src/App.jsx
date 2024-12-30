@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Upload from './pages/Upload';
 import Details from './pages/Details';
 import Error from './pages/Error';
+import Search from './pages/Search'
 
 const App = () => {
     const { i18n } = useTranslation();
@@ -27,6 +28,7 @@ const App = () => {
                     <Route path="/about" element={<About />} />
                     <Route path="/upload" element={<Upload />} />
                     <Route path="/details/:id" element={<Details />} />
+                    <Route path="/search/:q" element={<Search />} />
                 </Route>
             </Routes>
         </BrowserRouter>
@@ -42,6 +44,7 @@ function AppLayout() {
                 <Route path="/about" element={<About />} />
                 <Route path="/upload" element={<Upload />} />
                 <Route path="/details/:id" element={<Details />} />
+                <Route path="/search/:q" element={<Search />} />
             </Routes>
         </>
     );
