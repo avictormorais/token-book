@@ -26,6 +26,7 @@
     "new": "New",
     "or": "Or",
     "select_file": "Select a file",
+    "download_book": "Download book",
 
     "LOGIN_errorField": "Please fill in all required fields.",
     "LOGIN_errorEmail": "Enter a valid email address.",
