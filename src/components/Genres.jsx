@@ -56,6 +56,7 @@ const Genre = styled.div`
     margin-top: 5px;
     transition: background-color 0.3s, color 0.3s;
     white-space: nowrap;
+    user-select: none;
 `;
 
 export default Genres;

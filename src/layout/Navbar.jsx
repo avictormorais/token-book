@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { MdAccountCircle } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 import IconComponent from '../components/IconComponent'
+import { Link } from "react-router-dom";
 
 function NavBar() {
     const [isLight, setIsLight] = useState(() => {
@@ -73,9 +74,11 @@ function NavBar() {
 
     return (
         <StyledNav>
-            <IconDiv onClick={handleScrollToTop}>
-                <IconComponent height={'40px'} fill={'var(--primary-text-color)'}/>
-            </IconDiv>
+            <StyledLink to="/">
+                <IconDiv onClick={handleScrollToTop}>
+                    <IconComponent height={'40px'} fill={'var(--primary-text-color)'}/>
+                </IconDiv>
+            </StyledLink>
             <StyledDiv>
                 {isPT ? (
                     <Containericon onClick={handleLanguageClick}>
@@ -114,6 +117,7 @@ const StyledNav = styled.nav`
     position: fixed;
     top: 0;
     border-bottom: 2px solid var(--secondary-color);
+    z-index: 99999;
 
     @media screen and (max-width: 700px) {
         padding-block: 15px;
@@ -191,6 +195,10 @@ const StyledBrazil = styled(GiBrazilFlag)`
 
 const StyledUSA = styled(FaFlagUsa)`
     font-size: 1.15em;
+`
+
+const StyledLink = styled(Link)`
+    margin-bottom: auto;
 `
 
 const IconDiv = styled.div`

@@ -7,7 +7,7 @@ function ButtonNewBook(){
     const { t } = useTranslation();
 
     return(
-        <Link to="/new">
+        <Link to="/upload">
             <Container>
                 <StyledAddIcon/>
                 <Line/>
@@ -29,6 +29,7 @@ const Container = styled.div`
     padding-inline: 10px;
     cursor: pointer;
     text-decoration: none;
+    border: 2px solid var(--primary-color);
 
     @media screen and (max-width: 700px) {
         border-radius: 100%;

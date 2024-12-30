@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Navbar from './layout/Navbar';
 import Login from './pages/Login';
+import Upload from './pages/Upload';
 
 const App = () => {
     const { i18n } = useTranslation();
@@ -21,6 +22,7 @@ const App = () => {
                 <Route element={<AppLayout />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
+                    <Route path="/upload" element={<Upload />} />
                 </Route>
             </Routes>
         </BrowserRouter>
@@ -34,6 +36,7 @@ function AppLayout() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/upload" element={<Upload />} />
             </Routes>
         </>
     );
