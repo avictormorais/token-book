@@ -18,10 +18,10 @@
 }
 
 [data-theme="dark"]{
-  --primary-color: #070815;
-  --secondary-color: #141521;
+  --primary-color: #191724;
+  --secondary-color: #2d2b3c;
   --accent-color: white;
-  --primary-text-color: white;
+  --primary-text-color: #e0def4;
   --secondary-text-color: black;
 }
 
