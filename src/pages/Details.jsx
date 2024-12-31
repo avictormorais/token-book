@@ -2,20 +2,29 @@ import styled from "styled-components";
 import { useParams } from 'react-router-dom';
 import { PiBookFill } from "react-icons/pi";
 import { useState, useEffect } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import api from '../services/api';
 import ButtonNewBook from '../components/ButtonNewBook';
 import { useNavigate } from 'react-router-dom';
+import genresData from '../assets/genres.json';
 
 function Details(){
     const { id } = useParams();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { i18n } = useTranslation();
 
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [description, setDescription] = useState('');
     const [genres, setGenres] = useState([]);
+
+    const getGenreName = (id) => {
+        const genreObj = genresData.find(genre => genre.id === id);
+        if (!genreObj) return "";
+        return i18n.language === 'pt' ? genreObj.nome : genreObj.name;
+    };
+    
 
     useEffect(() => {
         const fetchBookDetails = async () => {
@@ -27,7 +36,7 @@ function Details(){
                     setTitle(book.metadata?.name.replace('.pdf', '') || 'Titulo');
                     setAuthor(book.metadata?.keyvalues.author || 'Autor');
                     setDescription(book.metadata?.keyvalues.description || 'Descrição não disponível.');
-                    setGenres(book.metadata?.keyvalues.genres || []);
+                    setGenres(book.metadata?.keyvalues.genre ? JSON.parse(book.metadata.keyvalues.genre) : []);
                 } else{
                     navigate(`/error`);
                 }
@@ -64,8 +73,10 @@ function Details(){
             </DivTop>
             <Description>{description}</Description>
             <DivGenres>
-                {genres.map((genre) => (
-                    <Genre key={genre}>{genre}</Genre>
+                {genres
+                    .filter((genre) => getGenreName(genre) !== '')
+                    .map((genre) => (
+                        <Genre key={genre}>{getGenreName(genre)}</Genre>
                 ))}
             </DivGenres>
             <Button onClick={handleDownload}>{t('download_book')}</Button>
