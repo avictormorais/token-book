@@ -30,6 +30,7 @@
     "page_not_found": "Página Não Encontrada.",
     "go_to_home": "Voltar pra home",
     "nothing_found": "Nenhum resultado encontrado.",
+    "private": "Privado",
 
     "LOGIN_errorField": "Preencha todos os campos.",
     "LOGIN_errorEmail": "Insira um email válido.",

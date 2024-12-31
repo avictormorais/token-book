@@ -4,43 +4,43 @@ import { useTranslation } from 'react-i18next';
 import { RiDragDropFill } from "react-icons/ri";
 import { FaFileCircleCheck } from "react-icons/fa6";
 import genresData from '../assets/genres.json';
+import api from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 function Upload() {
     const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
-        file: null,
         title: "",
         author: "",
         description: "",
-        selectedGenres: []
+        genres: [],
+        isPrivate: false,
+        file: null,
     });
     const [isDragging, setIsDragging] = useState(false);
 
-    const getGenreName = (genre) => {
-        return i18n.language === 'pt' ? genre.nome : genre.name;
-    };
+    const getGenreName = (genre) => i18n.language === 'pt' ? genre.nome : genre.name;
 
     const handleFileSelect = (file) => {
         if (file && file.type === "application/pdf") {
-            setFormData(prev => ({ ...prev, file: file.name }));
+            setFormData((prev) => ({ ...prev, file }));
         }
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleGenreSelect = (genreId) => {
-        setFormData(prev => {
-            const selectedGenres = [...prev.selectedGenres];
-            const index = selectedGenres.indexOf(genreId);
-            if (index === -1) {
-                selectedGenres.push(genreId);
-            } else {
-                selectedGenres.splice(index, 1);
-            }
-            return { ...prev, selectedGenres };
+        setFormData((prev) => {
+            const genres = [...prev.genres];
+            const index = genres.indexOf(genreId);
+            if (index === -1) genres.push(genreId);
+            else genres.splice(index, 1);
+            return { ...prev, genres };
         });
     };
 
@@ -65,18 +65,45 @@ function Upload() {
 
     const handleDiscard = () => {
         setFormData({
-            file: null,
             title: "",
             author: "",
             description: "",
-            selectedGenres: []
+            genres: [],
+            isPrivate: false,
+            file: null,
         });
     };
 
-    const handleSubmit = () => {
-        console.log(formData);
+    const handleCheckboxChange = () => {
+        setFormData((prev) => ({ ...prev, isPrivate: !prev.isPrivate }));
     };
 
+    const handleSubmit = async () => {
+        if (!formData.file) {
+            alert(t('file_required'));
+            return;
+        }
+        const form = new FormData();
+        form.append("file", formData.file);
+        form.append("title", formData.title);
+        form.append("author", formData.author);
+        form.append("description", formData.description);
+        form.append("isPrivate", formData.isPrivate);
+        form.append("genre", JSON.stringify(formData.genres));
+    
+        try {
+            const response = await api.post('/upload', form, {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+                },
+            });
+    
+            navigate(`/details/${response.data.ipfsHash}`);
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    };
+    
     return (
         <Container>
             <DragAndDrop
@@ -87,7 +114,7 @@ function Upload() {
             >
                 {formData.file ? <IconCheck /> : <IconDragAndDrop />}
                 <TextDragAndDrop>
-                    {formData.file ? `${t('file_received')}:\n${formData.file}` : t('drag_file')}
+                    {formData.file ? `${t('file_received')}:\n${formData.file.name}` : t('drag_file')}
                 </TextDragAndDrop>
                 <input
                     type="file"
@@ -139,13 +166,18 @@ function Upload() {
                 {genresData.map((genre) => (
                     <Genre
                         key={genre.id}
-                        selected={formData.selectedGenres.includes(genre.id)}
+                        selected={formData.genres.includes(genre.id)}
                         onClick={() => handleGenreSelect(genre.id)}
                     >
                         {getGenreName(genre)}
                     </Genre>
                 ))}
             </GenresContainer>
+
+            <DivCheckbox>
+                <CheckInput type="checkbox" checked={formData.isPrivate} onChange={handleCheckboxChange}/>
+                <Title style={{ marginTop: '0px', marginLeft: '10px', cursor: 'pointer' }} onClick={handleCheckboxChange}>{t('private')}</Title>
+            </DivCheckbox>
 
             <DivButtons>
                 <SimpleButton
@@ -377,5 +409,30 @@ const SimpleButton = styled.button`
     cursor: pointer;
     margin-block: 5px;
 `
+
+const DivCheckbox = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    margin-top: 15px;
+`
+
+const CheckInput = styled.input`
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background-color: transparent;
+    border: 2px solid var(--primary-text-color);
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:checked {
+        background-color: var(--primary-text-color);
+    }
+`;
 
 export default Upload;

@@ -4,6 +4,7 @@ import SearchBar from '../components/SearchBar'
 import { FaFaceSadTear } from "react-icons/fa6";
 import { useTranslation } from 'react-i18next'
 import GridCardsBook from "../components/GridCardsBook";
+import ButtonNewBook from '../components/ButtonNewBook'
 
 function Search(){
     const { q } = useParams();
@@ -30,6 +31,7 @@ function Search(){
     return(
         <Container>
             <SearchBar/>
+            <ButtonNewBook/>
 
             {q ? (
                 <GridCardsBook books={books} />

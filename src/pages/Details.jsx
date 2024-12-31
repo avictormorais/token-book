@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { PiBookFill } from "react-icons/pi";
 import { useState } from "react";
 import { useTranslation } from 'react-i18next'
+import ButtonNewBook from '../components/ButtonNewBook'
 
 function Details(){
     const { id } = useParams();
@@ -44,6 +45,8 @@ function Details(){
             </DivGenres>
 
             <Button>{t('download_book')}</Button>
+
+            <ButtonNewBook/>
         </Container>
     )
 }
