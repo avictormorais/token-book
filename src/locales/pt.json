@@ -31,6 +31,8 @@
     "go_to_home": "Voltar pra home",
     "nothing_found": "Nenhum resultado encontrado.",
     "private": "Privado",
+    "file_required": "Você precisa anexar um PDF.",
+    "all_fields_required": "Preencha todos os campos",
 
     "LOGIN_errorField": "Preencha todos os campos.",
     "LOGIN_errorEmail": "Insira um email válido.",

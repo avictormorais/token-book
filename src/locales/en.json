@@ -31,6 +31,8 @@
     "go_to_home": "Go back to home",
     "nothing_found": "Nothing found.",
     "private": "Private",
+    "file_required": "Please, send a PDF file.",
+    "all_fields_required": "Fill all fields",
 
     "LOGIN_errorField": "Please fill in all required fields.",
     "LOGIN_errorEmail": "Enter a valid email address.",

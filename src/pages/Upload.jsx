@@ -79,17 +79,20 @@ function Upload() {
     };
 
     const handleSubmit = async () => {
-        if (!formData.file) {
-            alert(t('file_required'));
+        const { file, title, author, description, genres } = formData;
+    
+        if (!file || !title.trim() || !author.trim() || !description.trim() || genres.length === 0) {
+            alert(t('all_fields_required'));
             return;
-        }
+        }        
+    
         const form = new FormData();
-        form.append("file", formData.file);
-        form.append("title", formData.title);
-        form.append("author", formData.author);
-        form.append("description", formData.description);
+        form.append("file", file);
+        form.append("title", title);
+        form.append("author", author);
+        form.append("description", description);
         form.append("isPrivate", formData.isPrivate);
-        form.append("genre", JSON.stringify(formData.genres));
+        form.append("genre", JSON.stringify(genres));
     
         try {
             const response = await api.post('/upload', form, {
@@ -102,7 +105,7 @@ function Upload() {
         } catch (error) {
             console.error("An error occurred:", error);
         }
-    };
+    };     
     
     return (
         <Container>
