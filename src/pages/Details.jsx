@@ -1,54 +1,77 @@
 import styled from "styled-components";
 import { useParams } from 'react-router-dom';
 import { PiBookFill } from "react-icons/pi";
-import { useState } from "react";
-import { useTranslation } from 'react-i18next'
-import ButtonNewBook from '../components/ButtonNewBook'
+import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
+import api from '../services/api';
+import ButtonNewBook from '../components/ButtonNewBook';
+import { useNavigate } from 'react-router-dom';
 
 function Details(){
     const { id } = useParams();
-    const { t } = useTranslation()
+    const { t } = useTranslation();
+    const navigate = useNavigate();
 
-    const [title, setTitle] = useState('Titulo');
-    const [author, setAuthor] = useState('Autor');
-    const [description, setDescription] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.');
-    const [genres, setGenres] = useState(['Romance', 'Ficção']);
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [description, setDescription] = useState('');
+    const [genres, setGenres] = useState([]);
+
+    useEffect(() => {
+        const fetchBookDetails = async () => {
+            try {
+                const response = await api.post('/list-books', { cid: id });
+                const book = response.data[0];
+                console.log(book)
+                if (book.metadata?.name) {
+                    setTitle(book.metadata?.name.replace('.pdf', '') || 'Titulo');
+                    setAuthor(book.metadata?.keyvalues.author || 'Autor');
+                    setDescription(book.metadata?.keyvalues.description || 'Descrição não disponível.');
+                    setGenres(book.metadata?.keyvalues.genres || []);
+                } else{
+                    navigate(`/error`);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar detalhes do livro:', error);
+            }
+        };
+        fetchBookDetails();
+    }, [id]);
+
+    const handleDownload = async () => {
+        try {
+            const response = await api.get(`/download`, { params: { cid: id }, responseType: 'blob' });
+            const blob = new Blob([response.data], { type: response.headers['content-type'] });
+            const link = document.createElement('a');
+            const fileName = `${title || 'download'}.pdf`;
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        } catch (error) {
+            console.error('Erro ao realizar download:', error);
+        }
+    };
 
     return(
         <Container>
             <DivTop>
                 <IconBook/>
-
                 <DivBookInfos>
-                    <TitleBook>
-                        {title}
-                    </TitleBook>
-
-                    <Author>
-                        {author}
-                    </Author>
+                    <TitleBook>{title}</TitleBook>
+                    <Author>{author}</Author>
                 </DivBookInfos>
             </DivTop>
-
-            <Description>
-                {description}
-            </Description>
-
+            <Description>{description}</Description>
             <DivGenres>
                 {genres.map((genre) => (
-                    <Genre 
-                        key={genre} 
-                    >
-                        {genre}
-                    </Genre>
+                    <Genre key={genre}>{genre}</Genre>
                 ))}
             </DivGenres>
-
-            <Button>{t('download_book')}</Button>
-
+            <Button onClick={handleDownload}>{t('download_book')}</Button>
             <ButtonNewBook/>
         </Container>
-    )
+    );
 }
 
 const Container = styled.div`
