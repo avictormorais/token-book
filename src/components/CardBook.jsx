@@ -20,6 +20,8 @@ const Container = styled.div`
     width: 130px;
     border-radius: 10px;
     padding-bottom: 10px;
+    margin-top: 5px;
+    overflow: hidden;
 
     &:hover {
         cursor: pointer;
@@ -40,6 +42,7 @@ const Title = styled.h3`
     width: 90%;
     line-height: 1;
     white-space: break-spaces;
+    white-space: pre-wrap;
 `;
 
 const Author = styled.p`

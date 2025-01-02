@@ -33,6 +33,7 @@
     "private": "Privado",
     "file_required": "Você precisa anexar um PDF.",
     "all_fields_required": "Preencha todos os campos",
+    "collection": "Acervo",
 
     "LOGIN_errorField": "Preencha todos os campos.",
     "LOGIN_errorEmail": "Insira um email válido.",

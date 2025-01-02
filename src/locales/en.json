@@ -33,6 +33,7 @@
     "private": "Private",
     "file_required": "Please, send a PDF file.",
     "all_fields_required": "Fill all fields",
+    "collection": "Collection",
 
     "LOGIN_errorField": "Please fill in all required fields.",
     "LOGIN_errorEmail": "Enter a valid email address.",

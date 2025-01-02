@@ -1,48 +1,63 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useParams } from 'react-router-dom';
-import SearchBar from '../components/SearchBar'
+import SearchBar from '../components/SearchBar';
 import { FaFaceSadTear } from "react-icons/fa6";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
+import api from '../services/api';
 import GridCardsBook from "../components/GridCardsBook";
-import ButtonNewBook from '../components/ButtonNewBook'
+import ButtonNewBook from '../components/ButtonNewBook';
+import { VscLoading } from "react-icons/vsc";
 
-function Search(){
+function Search() {
     const { q } = useParams();
     const { t } = useTranslation();
+    const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const books = [
-        { id: 1, title: "Livro 1", author: "Autor 1" },
-        { id: 2, title: "Livro 2", author: "Autor 2" },
-        { id: 3, title: "Livro 3", author: "Autor 3" },
-        { id: 4, title: "Livro 4", author: "Autor 4" },
-        { id: 5, title: "Livro 5", author: "Autor 5" },
-        { id: 6, title: "Livro 6", author: "Autor 6" },
-        { id: 7, title: "Livro 7", author: "Autor 7" },
-        { id: 8, title: "Livro 8", author: "Autor 8" },
-        { id: 9, title: "Livro 9", author: "Autor 9" },
-        { id: 10, title: "Livro 10", author: "Autor 10" },
-        { id: 11, title: "Livro 11", author: "Autor 11" },
-        { id: 12, title: "Livro 12", author: "Autor 12" },
-        { id: 13, title: "Livro 13", author: "Autor 13" },
-        { id: 14, title: "Livro 14", author: "Autor 14" },
-        { id: 15, title: "Livro 15", author: "Autor 15" },
-    ];  
+    useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                if(q){
+                    const response = await api.post('/list-books', { name: q });
+                    setBooks(Array.isArray(response.data) ? response.data : []);
+                } else {
+                    setBooks([]);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar livros:', error);
+                setBooks([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchBooks();
+    }, [q]);
 
-    return(
+    return (
         <Container>
-            <SearchBar/>
-            <ButtonNewBook/>
+            <SearchBar />
+            <ButtonNewBook />
 
-            {q ? (
-                <GridCardsBook books={books} />
+            {loading ? (
+                <LoadingDiv>
+                    <IconLoad/>
+                    <Loading>{t('loading')}</Loading>
+                </LoadingDiv>
+            ) : books.length > 0 ? (
+                <GridCardsBook books={books.map(book => ({
+                    id: book.ipfs_pin_hash,
+                    title: book.metadata?.name.replace('.pdf', '') || 'Título desconhecido',
+                    author: book.metadata?.keyvalues?.author || 'Autor desconhecido',
+                }))} />
             ) : (
                 <DivNotFound>
-                    <IconNotFound/>
+                    <IconNotFound />
                     <TextNotFound>{t('nothing_found')}</TextNotFound>
                 </DivNotFound>
             )}
         </Container>
-    )
+    );
 }
 
 const Container = styled.div`
@@ -71,7 +86,37 @@ const Container = styled.div`
         width: 90%;
         padding-top: 100px;
     }
+`;
+
+const LoadingDiv = styled.div`
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 `
+
+const spin = keyframes`
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+`;
+
+const IconLoad = styled(VscLoading)`
+    margin-top: 5%;
+    font-size: 7em;
+    width: 100%;
+    animation: ${spin} 1s linear infinite;
+`;
+
+const Loading = styled.p`
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 20px 0;
+    opacity: 0.8;
+`;
 
 const DivNotFound = styled.div`
     display: flex;
@@ -80,13 +125,13 @@ const DivNotFound = styled.div`
     justify-content: center;
     align-content: center;
     flex-direction: column;
-`
+`;
 
 const IconNotFound = styled(FaFaceSadTear)`
     font-size: 10em;
     margin-top: auto;
     margin-inline: auto;
-`
+`;
 
 const TextNotFound = styled.p`
     font-size: 1.5em;
@@ -96,6 +141,6 @@ const TextNotFound = styled.p`
     margin-top: 25px;
     opacity: 0.8;
     text-align: center;
-`
+`;
 
 export default Search;

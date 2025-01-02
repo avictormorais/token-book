@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useParams } from 'react-router-dom';
 import { PiBookFill } from "react-icons/pi";
 import { useState, useEffect } from "react";
@@ -7,6 +7,7 @@ import api from '../services/api';
 import ButtonNewBook from '../components/ButtonNewBook';
 import { useNavigate } from 'react-router-dom';
 import genresData from '../assets/genres.json';
+import { VscLoading } from "react-icons/vsc";
 
 function Details(){
     const { id } = useParams();
@@ -63,25 +64,34 @@ function Details(){
     };
 
     return(
-        <Container>
-            <DivTop>
-                <IconBook/>
-                <DivBookInfos>
-                    <TitleBook>{title}</TitleBook>
-                    <Author>{author}</Author>
-                </DivBookInfos>
-            </DivTop>
-            <Description>{description}</Description>
-            <DivGenres>
-                {genres
-                    .filter((genre) => getGenreName(genre) !== '')
-                    .map((genre) => (
-                        <Genre key={genre}>{getGenreName(genre)}</Genre>
-                ))}
-            </DivGenres>
-            <Button onClick={handleDownload}>{t('download_book')}</Button>
-            <ButtonNewBook/>
-        </Container>
+        <>
+            {title == '' ? (
+                <LoadingDiv>
+                    <IconLoad/>
+                    <Loading>{t('loading')}</Loading>
+                </LoadingDiv>
+            ) : (
+                <Container>
+                    <DivTop>
+                        <IconBook/>
+                        <DivBookInfos>
+                            <TitleBook>{title}</TitleBook>
+                            <Author>{author}</Author>
+                        </DivBookInfos>
+                    </DivTop>
+                    <Description>{description}</Description>
+                    <DivGenres>
+                        {genres
+                            .filter((genre) => getGenreName(genre) !== '')
+                            .map((genre) => (
+                                <Genre key={genre}>{getGenreName(genre)}</Genre>
+                        ))}
+                    </DivGenres>
+                    <Button onClick={handleDownload}>{t('download_book')}</Button>
+                    <ButtonNewBook/>
+                </Container>
+            )}
+        </>
     );
 }
 
@@ -204,7 +214,39 @@ const Button = styled.button`
     margin-block: 5px;
     margin-right: auto;
     margin-top: 25px;
-    margin-left: 15px;
+    margin-left: 20px;
 `
+
+const LoadingDiv = styled.div`
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-block: auto;
+`
+
+const spin = keyframes`
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+`;
+
+const IconLoad = styled(VscLoading)`
+    margin-top: auto;
+    margin-top: 40vh;
+    font-size: 7em;
+    width: 100%;
+    animation: ${spin} 1s linear infinite;
+`;
+
+const Loading = styled.p`
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 20px 0;
+    opacity: 0.8;
+`;
 
 export default Details;

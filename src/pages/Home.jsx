@@ -1,43 +1,67 @@
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import SearchBar from '../components/SearchBar'
 import ButtonNewBook from '../components/ButtonNewBook'
 import Genres from '../components/Genres'
 import GridCardsBook from '../components/GridCardsBook'
+import api from '../services/api'
+import genresData from '../assets/genres.json';
 
 function Home(){
-    const { t } = useTranslation()
-    const [selectedGenre, setSelectedGenre] = useState("Romance");
+    const { t, i18n } = useTranslation()
+    const [selectedGenre, setSelectedGenre] = useState(2)
+    const [allBooks, setAllBooks] = useState([]);
+    const [books, setBooks] = useState([]);
 
-    const books = [
-        { id: 1, title: "Livro 1", author: "Autor 1" },
-        { id: 2, title: "Livro 2", author: "Autor 2" },
-        { id: 3, title: "Livro 3", author: "Autor 3" },
-        { id: 4, title: "Livro 4", author: "Autor 4" },
-        { id: 5, title: "Livro 5", author: "Autor 5" },
-        { id: 6, title: "Livro 6", author: "Autor 6" },
-        { id: 7, title: "Livro 7", author: "Autor 7" },
-        { id: 8, title: "Livro 8", author: "Autor 8" },
-        { id: 9, title: "Livro 9", author: "Autor 9" },
-        { id: 10, title: "Livro 10", author: "Autor 10" },
-        { id: 11, title: "Livro 11", author: "Autor 11" },
-        { id: 12, title: "Livro 12", author: "Autor 12" },
-        { id: 13, title: "Livro 13", author: "Autor 13" },
-        { id: 14, title: "Livro 14", author: "Autor 14" },
-        { id: 15, title: "Livro 15", author: "Autor 15" },
-    ];    
+    const getGenreName = (id) => {
+        const genreObj = genresData.find(genre => genre.id === id);
+        if (!genreObj) return "";
+        return i18n.language === 'pt' ? genreObj.nome : genreObj.name;
+    };
+    
+    useEffect(() => {
+        const fetchBooksByGenre = async () => {
+            try {
+                const response = await api.post('/list-books', { genre: [selectedGenre] });
+                setBooks(Array.isArray(response.data) ? response.data : []);
+            } catch (error) {
+                setBooks([]);
+            }
+        };
+        fetchBooksByGenre();
+    }, [selectedGenre]);
+
+    useEffect(() => {
+        const fetchAllBooks = async () => {
+            try {
+                const response = await api.post('/list-books');
+                setAllBooks(Array.isArray(response.data) ? response.data : []);
+            } catch (error) {
+                setAllBooks([]);
+            }
+        };
+        fetchAllBooks();
+    }, []);
 
     return(
         <Container>
             <SearchBar/>
             <Genres selectedGenre={selectedGenre} setSelectedGenre={setSelectedGenre} />
 
-            <Title>{selectedGenre}</Title>
-            <GridCardsBook books={books} />
+            <Title>{getGenreName(selectedGenre)}</Title>
+            <GridCardsBook books={books.map(book => ({
+                    id: book.ipfs_pin_hash,
+                    title: book.metadata?.name.replace('.pdf', '') || 'Título desconhecido',
+                    author: book.metadata?.keyvalues?.author || 'Autor desconhecido',
+                }))}/>
 
-            <Title>Popular</Title>
-            <GridCardsBook books={books.slice(0,5)} />
+            <Title>{t('collection')}</Title>
+            <GridCardsBook books={allBooks.map(book => ({
+                    id: book.ipfs_pin_hash,
+                    title: book.metadata?.name.replace('.pdf', '') || 'Título desconhecido',
+                    author: book.metadata?.keyvalues?.author || 'Autor desconhecido',
+                }))}/>
 
             <ButtonNewBook/>
         </Container>

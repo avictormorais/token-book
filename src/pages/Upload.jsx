@@ -15,7 +15,7 @@ function Upload() {
         title: "",
         author: "",
         description: "",
-        genres: [],
+        genres: [0],
         isPrivate: false,
         file: null,
     });

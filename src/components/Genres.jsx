@@ -10,8 +10,7 @@ function Genres({ selectedGenre, setSelectedGenre }) {
     };
 
     const isSelected = (genre) => {
-        const genreName = getGenreName(genre);
-        return selectedGenre === genreName;
+        return selectedGenre === genre;
     };
 
     return(
@@ -19,8 +18,8 @@ function Genres({ selectedGenre, setSelectedGenre }) {
             {genresData.map((genre) => (
                 <Genre 
                     key={genre.id} 
-                    selected={isSelected(genre)} 
-                    onClick={() => setSelectedGenre(getGenreName(genre))}
+                    selected={isSelected(genre.id)} 
+                    onClick={() => setSelectedGenre(genre.id)}
                 >
                     {getGenreName(genre)}
                 </Genre>
