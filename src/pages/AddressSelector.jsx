@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import IconComponent from '../components/IconComponent'
 import addresses from '../assets/addresses.json'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
+import { FaArrowLeft } from 'react-icons/fa';
 
 function AddressSelector(){
-    const { t } = useTranslation()
+    const { t } = useTranslation();
     const [selectedAddress, setSelectedAddress] = useState('');
+    const navigate = useNavigate();
 
     const handleSelect = (event) => {
         const address = event.target.value;
@@ -17,14 +19,15 @@ function AddressSelector(){
 
     return(
         <Container>
+            <BackButton onClick={() => navigate(-1)}>
+                <FaArrowLeft size={24} color="var(--primary-text-color)" />
+            </BackButton>
             <LinkComponent to={'/'}>
                 <IconComponent height={'23vw'} width={'23vw'} fill={'var(--primary-text-color)'}/>
             </LinkComponent>
-
             <SelectorContainer>
                 <Title>{t('select_address')}</Title>
                 <TextSelected>{`${t('selected_address')}:\n ${localStorage.getItem("UserAddress") ? localStorage.getItem("UserAddress") : ''}`}</TextSelected>
-
                 <StyledSelect value={selectedAddress} onChange={handleSelect}>
                     <option value="" disabled>{t('select_address')}</option>
                     {addresses.map((address, index) => (
@@ -35,6 +38,20 @@ function AddressSelector(){
         </Container>
     )
 }
+
+const BackButton = styled.button`
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    @media (max-width: 1000px) {
+        top: 10px;
+        left: 10px;
+    }
+`
 
 const LinkComponent = styled(Link)`
     margin: 0;
