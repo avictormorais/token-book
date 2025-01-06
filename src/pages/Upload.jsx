@@ -89,6 +89,7 @@ function Upload() {
         
         if(!localStorage.getItem("UserAddress")){
             alert(t('must_select_address'))
+            return;
         }
     
         const form = new FormData();
@@ -98,6 +99,7 @@ function Upload() {
         form.append("description", description);
         form.append("isPrivate", formData.isPrivate);
         form.append("genre", JSON.stringify(genres));
+        form.append("user", localStorage.getItem("UserAddress"));
     
         try {
             const response = await api.post('/upload', form, {

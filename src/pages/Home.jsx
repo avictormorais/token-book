@@ -35,7 +35,7 @@ function Home(){
     useEffect(() => {
         const fetchAllBooks = async () => {
             try {
-                const response = await api.post('/list-books');
+                const response = await api.post('/list-books', {user: localStorage.getItem("UserAddress") ? localStorage.getItem("UserAddress") : '' });
                 setAllBooks(Array.isArray(response.data) ? response.data : []);
             } catch (error) {
                 setAllBooks([]);
