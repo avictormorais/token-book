@@ -71,6 +71,7 @@ function Upload() {
             genres: [],
             isPrivate: false,
             file: null,
+            user: localStorage.getItem("UserAddress") ? localStorage.getItem("UserAddress") : ''
         });
     };
 
@@ -84,7 +85,11 @@ function Upload() {
         if (!file || !title.trim() || !author.trim() || !description.trim() || genres.length === 0) {
             alert(t('all_fields_required'));
             return;
-        }        
+        }
+        
+        if(!localStorage.getItem("UserAddress")){
+            alert(t('must_select_address'))
+        }
     
         const form = new FormData();
         form.append("file", file);

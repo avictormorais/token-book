@@ -8,6 +8,7 @@ import Upload from './pages/Upload';
 import Details from './pages/Details';
 import Error from './pages/Error';
 import Search from './pages/Search'
+import AddressSelector from './pages/AddressSelector';
 
 const App = () => {
     const { i18n } = useTranslation();
@@ -20,7 +21,7 @@ const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<AddressSelector />} />
                 <Route path="*" element={<Error />} />
 
                 <Route element={<AppLayout />}>

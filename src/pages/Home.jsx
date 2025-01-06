@@ -23,7 +23,7 @@ function Home(){
     useEffect(() => {
         const fetchBooksByGenre = async () => {
             try {
-                const response = await api.post('/list-books', { genre: [selectedGenre] });
+                const response = await api.post('/list-books', { genre: [selectedGenre], user: localStorage.getItem("UserAddress") ? localStorage.getItem("UserAddress") : '' });
                 setBooks(Array.isArray(response.data) ? response.data : []);
             } catch (error) {
                 setBooks([]);

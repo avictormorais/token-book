@@ -34,6 +34,9 @@
     "file_required": "Please, send a PDF file.",
     "all_fields_required": "Fill all fields",
     "collection": "Collection",
+    "select_address": "Select a address",
+    "selected_address": "Address selected",
+    "must_select_address": "You need to authenticate.",
 
     "LOGIN_errorField": "Please fill in all required fields.",
     "LOGIN_errorEmail": "Enter a valid email address.",

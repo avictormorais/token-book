@@ -34,6 +34,9 @@
     "file_required": "Você precisa anexar um PDF.",
     "all_fields_required": "Preencha todos os campos",
     "collection": "Acervo",
+    "select_address": "Selecione um endereço",
+    "selected_address": "Endereço selecionado",
+    "must_select_address": "Você precisa se autenticar.",
 
     "LOGIN_errorField": "Preencha todos os campos.",
     "LOGIN_errorEmail": "Insira um email válido.",

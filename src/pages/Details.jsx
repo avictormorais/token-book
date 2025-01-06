@@ -30,7 +30,7 @@ function Details(){
     useEffect(() => {
         const fetchBookDetails = async () => {
             try {
-                const response = await api.post('/list-books', { cid: id });
+                const response = await api.post('/list-books', { cid: id, user: localStorage.getItem("UserAddress") ? localStorage.getItem("UserAddress") : '' });
                 const book = response.data[0];
                 console.log(book)
                 if (book.metadata?.name) {

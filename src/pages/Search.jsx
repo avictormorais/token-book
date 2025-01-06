@@ -19,7 +19,7 @@ function Search() {
         const fetchBooks = async () => {
             try {
                 if(q){
-                    const response = await api.post('/list-books', { name: q });
+                    const response = await api.post('/list-books', { name: q, user: localStorage.getItem("UserAddress") ? localStorage.getItem("UserAddress") : '' });
                     setBooks(Array.isArray(response.data) ? response.data : []);
                 } else {
                     setBooks([]);
